@@ -1,7 +1,9 @@
+import { User } from "./user.type.js";
+
 export type Offer = {
     title: string;
     description: string;
-    date: string;
+    date: Date;
     city: 'Paris' | 'Cologne' | 'Brussels' | 'Amsterdam' | 'Hamburg' | 'Dusseldorf';
     previewImage: string;
     photos: string[];
@@ -13,7 +15,7 @@ export type Offer = {
     guests: number;
     price: number;
     amenities: ('Breakfast' | 'Air conditioning' | 'Laptop friendly workspace' | 'Baby seat' | 'Washer' | 'Towels' | 'Fridge')[];
-    authorEmail: string;
+    author: User;
     commentsCount: number;
     latitude: number;
     longitude: number;
