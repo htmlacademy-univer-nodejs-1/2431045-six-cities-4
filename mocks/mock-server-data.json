@@ -1,0 +1,123 @@
+{
+    "api": {
+      "titles": [
+        "Beautiful Apartment in Paris",
+        "Cozy House in Amsterdam",
+        "Luxury Villa in Cologne",
+        "Modern Loft in Brussels",
+        "Seaside Cottage in Hamburg",
+        "Penthouse in Dusseldorf",
+        "Charming Studio in Berlin",
+        "Rustic Cabin in Munich"
+      ],
+      "descriptions": [
+        "Spacious apartment in the heart of Paris, perfect for a romantic getaway or a family vacation.",
+        "A charming house with a beautiful garden, located in a peaceful neighborhood.",
+        "A luxurious villa with a private pool and stunning views.",
+        "A stylish loft in the heart of Brussels, ideal for business travelers.",
+        "A cozy seaside cottage with breathtaking ocean views.",
+        "A high-end penthouse with panoramic city views.",
+        "A small but charming studio in the center of Berlin.",
+        "A rustic cabin surrounded by nature, ideal for a peaceful retreat."
+      ],
+      "dates": [
+        "2025-02-16",
+        "2025-02-16",
+        "2025-03-01",
+        "2025-02-25",
+        "2025-03-10",
+        "2025-03-15",
+        "2025-04-05",
+        "2025-04-20"
+      ],
+      "cities": [
+        "Paris",
+        "Amsterdam",
+        "Cologne",
+        "Brussels",
+        "Hamburg",
+        "Dusseldorf",
+        "Berlin",
+        "Munich"
+      ],
+      "previewImages": [
+        "https://example.com/preview1.jpg",
+        "https://example.com/preview2.jpg",
+        "https://example.com/preview3.jpg",
+        "https://example.com/preview4.jpg",
+        "https://example.com/preview5.jpg",
+        "https://example.com/preview6.jpg",
+        "https://example.com/preview7.jpg",
+        "https://example.com/preview8.jpg"
+      ],
+      "photos": [
+        ["https://example.com/photo1.jpg", "https://example.com/photo2.jpg"],
+        ["https://example.com/photo3.jpg", "https://example.com/photo4.jpg"],
+        ["https://example.com/photo5.jpg", "https://example.com/photo6.jpg"],
+        ["https://example.com/photo7.jpg", "https://example.com/photo8.jpg"],
+        ["https://example.com/photo9.jpg", "https://example.com/photo10.jpg"],
+        ["https://example.com/photo11.jpg", "https://example.com/photo12.jpg"],
+        ["https://example.com/photo13.jpg", "https://example.com/photo14.jpg"],
+        ["https://example.com/photo15.jpg", "https://example.com/photo16.jpg"]
+      ],
+      "premium": [true, false, true, false, true, false, true, false],
+      "favorite": [false, true, false, true, false, true, false, true],
+      "ratings": [4.8, 4.5, 5.0, 4.2, 4.7, 4.3, 4.6, 4.1],
+      "housingTypes": ["apartment", "house", "house", "apartment", "room", "hotel", "apartment", "house"],
+      "rooms": [3, 4, 6, 2, 1, 5, 2, 7],
+      "guests": [5, 8, 10, 3, 2, 6, 4, 12],
+      "prices": [150, 200, 500, 120, 80, 300, 100, 600],
+      "amenities": [
+        ["Breakfast", "Air conditioning", "Washer"],
+        ["Air conditioning", "Baby seat", "Towels", "Fridge"],
+        ["Breakfast", "Towels", "Fridge"],
+        ["Laptop friendly workspace", "Washer"],
+        ["Baby seat", "Towels"],
+        ["Air conditioning", "Fridge"],
+        ["Breakfast", "Towels"],
+        ["Washer", "Fridge"]
+      ],
+      "users": [
+        "John Doe",
+        "Jane Smith",
+        "Robert King",
+        "Anna Muller",
+        "Emily Johnson",
+        "Michael Brown",
+        "Sophia Martinez",
+        "Daniel Lee"
+      ],
+      "emails": [
+        "johndoe@example.com",
+        "janesmith@example.com",
+        "robking@example.com",
+        "anna@example.com",
+        "emily@example.com",
+        "michael@example.com",
+        "sophia@example.com",
+        "daniel@example.com"
+      ],
+      "avatars": [
+        "https://example.com/avatar1.jpg",
+        "https://example.com/avatar2.png",
+        "https://example.com/avatar3.jpg",
+        "https://example.com/avatar4.jpg",
+        "https://example.com/avatar5.jpg",
+        "https://example.com/avatar6.jpg",
+        "https://example.com/avatar7.jpg",
+        "https://example.com/avatar8.jpg"
+      ],
+      "commentsCounts": [0, 0, 3, 5, 2, 7, 4, 1],
+      "coordinates": [
+        {"latitude": 48.85661, "longitude": 2.351499},
+        {"latitude": 52.370216, "longitude": 4.895168},
+        {"latitude": 50.937531, "longitude": 6.960279},
+        {"latitude": 50.85034, "longitude": 4.35171},
+        {"latitude": 53.551086, "longitude": 9.993682},
+        {"latitude": 51.227741, "longitude": 6.773456},
+        {"latitude": 52.520008, "longitude": 13.404954},
+        {"latitude": 48.135124, "longitude": 11.581981}
+      ]
+    }
+  }
+  

@@ -1,0 +1,21 @@
+export type MockServerData = {
+    titles: string[];
+    descriptions: string[];
+    dates: string[];
+    cities: string[];
+    previewImages: string[];
+    photos: string[][];
+    premium: boolean[];
+    favorite: boolean[];
+    ratings: number[];
+    housingTypes: string[];
+    rooms: number[];
+    guests: number[];
+    prices: number[];
+    amenities: string[][];
+    users: string[];
+    emails: string[];
+    avatars: string[];
+    commentsCounts: number[];
+    coordinates: { latitude: number; longitude: number }[];
+  };
