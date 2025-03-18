@@ -1,50 +1,36 @@
-import { readFileSync } from 'node:fs';
+import EventEmitter from 'node:events';
+import { createReadStream } from 'node:fs';
 import { FileReader } from './file-reader.interface.js';
-import { Offer } from '../../types/offer.type.js';
 
-export class TSVFileReader implements FileReader {
-  private rawData = '';
+const CHUNK_SIZE = 16384; // 16KB
 
-  constructor(private readonly fileName: string) {}
-
-  public read(): void {
-    this.rawData = readFileSync(this.fileName, { encoding: 'utf-8' });
+export class TSVFileReader extends EventEmitter implements FileReader {
+  constructor(private readonly filename: string) {
+    super();
   }
 
-  public toArray(): Offer[] {
-    if (!this.rawData) {
-      throw new Error('File was not read');
+  public async read(): Promise<void> {
+    const readStream = createReadStream(this.filename, {
+      highWaterMark: CHUNK_SIZE,
+      encoding: 'utf-8',
+    });
+
+    let remainingData = '';
+    let nextLinePosition = -1;
+    let importedRowCount = 0;
+
+    for await (const chunk of readStream) {
+      remainingData += chunk.toString();
+
+      while ((nextLinePosition = remainingData.indexOf('\n')) >= 0) {
+        const completeRow = remainingData.slice(0, nextLinePosition + 1);
+        remainingData = remainingData.slice(++nextLinePosition);
+        importedRowCount++;
+
+        this.emit('line', completeRow);
+      }
     }
 
-    return this.rawData
-      .split('\n')
-      .filter((row) => row.trim().length > 0)
-      .map((line) => line.split('\t'))
-      .map(([title, description, createDate, city, previewImage, photos, premium, favorite, rating, housingType, rooms, guests, price, amenities, authorName, authorEmail, authorAvatar, authorPassword, authorUserType, commentsCount, latitude, longitude]): Offer => ({
-        title: title || 'Not found',
-        description: description || '',
-        date: new Date(createDate),
-        city: city as Offer['city'],
-        previewImage: previewImage || '',
-        photos: photos ? photos.split(',') : [],
-        premium: premium === 'true',
-        favorite: favorite === 'true',
-        rating: parseFloat(rating) || 0,
-        housingType: housingType as Offer['housingType'],
-        rooms: parseInt(rooms, 10) || 0,
-        guests: parseInt(guests, 10) || 0,
-        price: parseInt(price, 10) || 0,
-        amenities: amenities ? amenities.split(',').filter((a): a is Offer['amenities'][number] => ['Breakfast', 'Air conditioning', 'Laptop friendly workspace', 'Baby seat', 'Washer', 'Towels', 'Fridge'].includes(a)) : [],
-        author: {
-          name: authorName,
-          email: authorEmail,
-          avatar: authorAvatar,
-          password: authorPassword,
-          userType: authorUserType as Offer['author']['userType'],
-        },
-        commentsCount: parseInt(commentsCount, 10) || 0,
-        latitude: parseFloat(latitude) || 0,
-        longitude: parseFloat(longitude) || 0
-      }));
+    this.emit('end', importedRowCount);
   }
 }
