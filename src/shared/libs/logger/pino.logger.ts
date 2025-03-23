@@ -14,19 +14,19 @@ export class PinoLogger implements Logger {
     const destination = resolve(modulePath, '../../../', logFilePath);
 
     const multiTransport = transport({
-        targets: [
-          {
-            target: 'pino/file',
-            options: { destination },
-            level: 'debug'
-          },
-          {
-            target: 'pino/file',
-            level: 'info',
-            options: {},
-          }
-        ],
-      });
+      targets: [
+        {
+          target: 'pino/file',
+          options: { destination },
+          level: 'debug'
+        },
+        {
+          target: 'pino/file',
+          level: 'info',
+          options: {},
+        }
+      ],
+    });
 
     this.logger = pino({}, multiTransport);
     this.logger.info('Logger created…');
