@@ -1,19 +1,24 @@
+import { Amenity } from './offer/amenity-type.enum.js';
+import { ApartmentType } from './offer/apartment-type.enum.js';
+import { CityType } from './offer/city-type.enum.js';
+import { User } from './user/user.type.js';
+
 export type MockServerData = {
     titles: string[];
     descriptions: string[];
-    dates: string[];
-    cities: string[];
+    dates: Date[];
+    cities: CityType[];
     previewImages: string[];
     photos: string[][];
     premium: boolean[];
     favorite: boolean[];
     ratings: number[];
-    housingTypes: string[];
+    housingTypes: ApartmentType[];
     rooms: number[];
     guests: number[];
     prices: number[];
-    amenities: string[][];
-    users: string[];
+    amenities: Array<Amenity>[];
+    users: User[];
     emails: string[];
     avatars: string[];
     commentsCounts: number[];

@@ -1,4 +1,5 @@
-import { Offer, User } from '../types/index.js';
+import { Amenity, ApartmentType, CityType, Offer} from '../types/index.js';
+import { UserType } from '../types/user/user-type.enum.js';
 
 export function createOffer(offerData: string): Offer {
   const [
@@ -16,44 +17,36 @@ export function createOffer(offerData: string): Offer {
     guests,
     price,
     amenities,
-    authorName,
-    authorEmail,
-    authorAvatar,
-    authorPassword,
-    authorUserType,
+    author,
     commentsCount,
     latitude,
-    longitude
+    longitude,
   ] = offerData.replace('\n', '').split('\t');
 
-  const amenitiesArray = amenities.split(',').filter((a): a is Offer['amenities'][number] => ['Breakfast', 'Air conditioning', 'Laptop friendly workspace', 'Baby seat', 'Washer', 'Towels', 'Fridge'].includes(a));
-
-  const author: User = {
-    name: authorName,
-    email: authorEmail,
-    avatar: authorAvatar,
-    password: authorPassword,
-    userType: authorUserType as Offer['author']['userType'],
-  };
 
   return {
-    title: title || 'No found',
+    title: title,
     description,
     date: new Date(createdDate),
-    city: city as Offer['city'],
+    city: CityType[city as keyof typeof CityType],
     previewImage,
-    photos: photos ? photos.split(',') : [],
-    premium: premium === 'true',
-    favorite: favorite === 'true',
+    photos: JSON.parse(photos),
+    premium: JSON.parse(premium),
+    favorite: JSON.parse(favorite),
     rating: parseFloat(rating),
-    housingType: housingType as Offer['housingType'],
-    rooms: parseInt(rooms, 10) || 0,
-    guests: parseInt(guests, 10) || 0,
-    price: parseInt(price, 10) || 0,
-    amenities: amenitiesArray,
-    author,
-    commentsCount: parseInt(commentsCount, 10) || 0,
-    latitude: parseFloat(latitude) || 0,
-    longitude: parseFloat(longitude) || 0
+    housingType: ApartmentType[housingType as keyof typeof ApartmentType],
+    rooms: Number(rooms),
+    guests: Number(guests),
+    price: Number(price),
+    amenities: (JSON.parse(amenities) as string[]).map((a) => a as Amenity),
+    author:{
+      ...JSON.parse(author),
+      type: UserType[
+        JSON.parse(author).type as string as keyof typeof UserType
+      ]
+    },
+    commentsCount: Number(commentsCount),
+    latitude: Number(latitude),
+    longitude: Number(longitude)
   };
 }

@@ -1,4 +1,4 @@
-import got from 'got';
+import axios from 'axios';
 import { Command } from './command.interface.js';
 import { MockServerData } from '../../shared/types/index.js';
 import { TSVOfferGenerator } from '../../shared/libs/offer-generator/index.js';
@@ -10,7 +10,8 @@ export class GenerateCommand implements Command {
 
   private async load(url: string) {
     try {
-      this.initialData = await got.get(url).json();
+      const {data} = await axios.get(url);
+      this.initialData = data;
     } catch(err) {
       throw new Error(`Can't load data from ${url}, erorr: ${err}`);
     }
@@ -30,7 +31,7 @@ export class GenerateCommand implements Command {
 
   public async execute(...parameters: string[]): Promise<void> {
     const [count, filepath, url] = parameters;
-    const offerCount = Number.parseInt(count, 10);
+    const offerCount = Number(count);
 
     try {
       await this.load(url);

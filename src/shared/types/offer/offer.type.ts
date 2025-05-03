@@ -1,20 +1,23 @@
-import { User } from './user.type.js';
+import { User } from '../user/user.type.js';
+import { Amenity } from './amenity-type.enum.js';
+import { ApartmentType } from './apartment-type.enum.js';
+import { CityType } from './city-type.enum.js';
 
 export type Offer = {
     title: string;
     description: string;
     date: Date;
-    city: 'Paris' | 'Cologne' | 'Brussels' | 'Amsterdam' | 'Hamburg' | 'Dusseldorf';
+    city: CityType;
     previewImage: string;
     photos: string[];
     premium: boolean;
     favorite: boolean;
     rating: number;
-    housingType: 'apartment' | 'house' | 'room' | 'hotel';
+    housingType: ApartmentType;
     rooms: number;
     guests: number;
     price: number;
-    amenities: ('Breakfast' | 'Air conditioning' | 'Laptop friendly workspace' | 'Baby seat' | 'Washer' | 'Towels' | 'Fridge')[];
+    amenities: Amenity[];
     author: User;
     commentsCount: number;
     latitude: number;
