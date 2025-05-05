@@ -11,7 +11,7 @@ export interface CategoryEntity extends defaultClasses.Base {}
 })
 // eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
 export class CategoryEntity extends defaultClasses.TimeStamps implements Category {
-  @prop({required: true, trim: true})
+  @prop({required: true, trim: true, type: String})
   public name!: string;
 }
 
