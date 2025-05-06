@@ -7,4 +7,4 @@ export * from './category/category.type.js';
 export * from './component.enum.js';
 
 export * from './offer/index.js';
-export * from './sort-type.enum.js'
+export * from './sort-type.enum.js';

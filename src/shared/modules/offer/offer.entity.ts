@@ -67,7 +67,7 @@ export class OfferEntity extends defaultClasses.TimeStamps {
   public userId!: Ref<UserEntity>;
 
   @prop({type:Number})
-  public commentsCount: number
+  public commentsCount: number;
 
 }
 

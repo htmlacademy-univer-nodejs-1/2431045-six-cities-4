@@ -11,7 +11,7 @@ export function createOfferContainer() {
 
   offerContainer.bind<OfferService>(Component.OfferService).to(DefaultOfferService);
   offerContainer.bind<types.ModelType<OfferEntity>>(Component.OfferModel).toConstantValue(OfferModel);
-  offerContainer.bind<types.ModelType<OfferSummaryEntity>>(Component.OfferModel).toConstantValue(OfferSummaryModel)
+  offerContainer.bind<types.ModelType<OfferSummaryEntity>>(Component.OfferModel).toConstantValue(OfferSummaryModel);
 
   return offerContainer;
 }

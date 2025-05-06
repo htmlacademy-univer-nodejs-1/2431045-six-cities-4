@@ -40,24 +40,24 @@ export class DefaultCategoryService implements CategoryService {
 
   public async find(): Promise<DocumentType<CategoryEntity>[]> {
     return this.categoryModel
-    .aggregate([
-      {
-        $lookup: {
-          from: 'offers',
-          let: { categoryId: '$_id'},
-          pipeline: [
-            { $match: { $expr: { $in: ['$$categoryId', '$categories'] } } },
-            { $project: { _id: 1}}
-          ],
-          as: 'offers'
+      .aggregate([
+        {
+          $lookup: {
+            from: 'offers',
+            let: { categoryId: '$_id'},
+            pipeline: [
+              { $match: { $expr: { $in: ['$$categoryId', '$categories'] } } },
+              { $project: { _id: 1}}
+            ],
+            as: 'offers'
+          },
         },
-      },
-      { $addFields:
+        { $addFields:
         { id: { $toString: '$_id'}, offerCount: { $size: '$offers'} }
-      },
-      { $unset: 'offers' },
+        },
+        { $unset: 'offers' },
         { $limit: MAX_CATEGORIES_COUNT },
         { $sort: { offerCount: SortType.Down } }
-    ]).exec();
+      ]).exec();
   }
 }

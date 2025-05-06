@@ -16,7 +16,7 @@ export interface UserEntity extends defaultClasses.Base {}
 // eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
 export class UserEntity extends defaultClasses.TimeStamps implements User {
     @prop({ unique: true, required: true, type:String })
-    public email!: string;
+  public email!: string;
 
     @prop({ required: false, default: '', type: String })
     public avatar!: string;
@@ -30,7 +30,7 @@ export class UserEntity extends defaultClasses.TimeStamps implements User {
     @prop({ required: false, default: UserType.Default,
       enum: UserType,
       type: String
-     })
+    })
     public userType: UserType;
 
     constructor(userData: User) {
