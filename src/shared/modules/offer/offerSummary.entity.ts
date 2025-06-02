@@ -18,41 +18,41 @@ export interface OfferSummaryEntity extends defaultClasses.Base {}
   })
   // eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
 export class OfferSummaryEntity extends defaultClasses.TimeStamps {
-    @prop({ trim: true, required: true })
-  public title!: string;
+    @prop({ trim: true, required: true, type:String })
+  public title: string;
 
     @prop({type:Number})
-    public cost!: number;
+    public cost: number;
 
     @prop({
       type: () => String,
       enum: ApartmentType,
     })
-    public apartmentType!: ApartmentType;
+    public apartmentType: ApartmentType;
 
     @prop({type:Boolean})
-    public isFavorite!: boolean;
+    public isFavorite: boolean;
 
     @prop({type:Date})
-    public date!: Date;
+    public date: Date;
 
     @prop({
       type: () => String,
       enum: CityType,
     })
-    public city!: CityType;
+    public city: CityType;
 
     @prop({type:String})
-    public previewImage!: string;
+    public previewImage: string;
 
     @prop({type:Boolean})
-    public isPremium!: boolean;
+    public isPremium: boolean;
 
     @prop({type:Number})
-    public rating!: number;
+    public rating: number;
 
     @prop({type:Number})
-    public commentCount!: number;
+    public commentCount: number;
 
     @prop({
       ref: UserEntity,

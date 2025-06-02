@@ -9,6 +9,9 @@ import { DefaultUserService, UserModel } from '../../shared/modules/user/index.j
 import { DEFAULT_USER_PASSWORD } from './command.constant.js';
 import { Offer } from '../../shared/types/index.js';
 import { TSVFileReader } from '../../shared/libs/file-reader/index.js';
+import { OfferSummaryModel } from '../../shared/modules/offer/offerSummary.entity.js';
+import { FavoriteModel } from '../../shared/modules/favorite/favorite.entity.js';
+import { CommentModel } from '../../shared/modules/comment/comment.entity.js';
 
 export class ImportCommand implements Command {
   private userService: UserService;
@@ -22,7 +25,13 @@ export class ImportCommand implements Command {
     this.onCompleteImport = this.onCompleteImport.bind(this);
 
     this.logger = new ConsoleLogger();
-    this.offerService = new DefaultOfferService(this.logger, OfferModel);
+    this.offerService = new DefaultOfferService(
+      this.logger,
+      OfferModel,
+      OfferSummaryModel,
+      FavoriteModel,
+      CommentModel
+    );
     this.userService = new DefaultUserService(this.logger, UserModel);
     this.databaseClient = new MongoDatabaseClient(this.logger);
   }
