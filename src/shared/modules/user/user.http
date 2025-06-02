@@ -5,7 +5,23 @@ POST http://localhost:3123/users/register HTTP/1.1
 Content-Type: application/json
 
 {
-  "email": "torans@overlook.net",
+  "email": "zxc@mail.ru",
+  "avatar": "torrance.png",
+  "name": "Jack",
+  "lastname": "Torrance",
+  "password": "shining",
+  "userType": "pro"
+}
+
+###
+
+## Создать неправильного пользователя
+
+POST http://localhost:3123/users/register HTTP/1.1
+Content-Type: application/json
+
+{
+  "email": "zxc",
   "avatar": "torrance.png",
   "name": "Jack",
   "lastname": "Torrance",
