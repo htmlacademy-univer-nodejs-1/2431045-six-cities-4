@@ -6,19 +6,61 @@ Content-Type: application/json
 
 {
   "title": "test:title",
-   "description": "test:description",
+   "description": "Очень круто!Очень круто!Очень круто!Очень круто!Очень круто!",
    "image": "test:image",
-   "date": "test:date",
-   "cost": "test:cost",
-   "city": "test:city",
-   "gallery": "test:gallery",
-   "isPremium": "test:isPremium",
-   "isFavorite": "test:isFavorite",
-   "rating": "test:rating",
-   "apartmentType": "test:apartmentType",
-   "roomCount": "test:roomCount",
-   "guestCount": "test:guestCount",
-   "amenities": "test:amenities",
-   "userId": "test:userId"
+   "date": "2025-02-15T00:00:00.000Z",
+   "cost": 1500,
+   "city": "Paris",
+   "gallery": ["fdgdfhfhfdhdf","fdgdfhfhfdhdf","fdgdfhfhfdhdf","fdgdfhfhfdhdf","fdgdfhfhfdhdf","fdgdfhfhfdhdf"],
+   "isPremium": false,
+   "isFavorite": true,
+   "rating": 4.5,
+   "apartmentType": "hotel",
+   "roomCount": 4,
+   "guestCount": 5,
+   "amenities": ["Breakfast"],
+   "userId": "682993752b59f50b58ea3cff"
 }
+###
+
+
+# Получить объявление по идентификатору
+GET http://localhost:3123/offers/68282c46e934e29b8d7e4296 HTTP/1.1
+
+###
+
+## Получить список объявлений
+GET http://localhost:3123/offers HTTP/1.1
+
+###
+
+## Удалить объявление по идентификатору
+
+DELETE http://localhost:3123/offers/683d62b3a14413961dd5f585 HTTP/1.1
+
+###
+
+
+## Обновить объявление
+
+PATCH http://localhost:3123/offers/683d55a34bb98140ef63ae12 HTTP/1.1
+Content-Type: application/json
+
+{
+  "title": "Ночной дозор 5",
+  "description": "Проверка обновления Проверка обновления Проверка обновления Проверка обновления",
+  "cost": 1100
+}
+
+###
+
+## Список комментариев к объявлению
+GET http://localhost:3123/offers/683d55a34bb98140ef63ae12/comments HTTP/1.1
+
+###
+
+
+## Список новых товаров
+GET http://localhost:3123/offers/bundles/new HTTP/1.1
+
 ###

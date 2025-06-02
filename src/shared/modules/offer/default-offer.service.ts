@@ -1,15 +1,15 @@
 import { inject, injectable } from 'inversify';
 import { OfferService } from './offer-service.interface.js';
-import { CityType, Component} from '../../types/index.js';
+import { CityType, Component, SortType} from '../../types/index.js';
 import { Logger } from '../../libs/logger/index.js';
 import { OfferEntity } from './offer.entity.js';
-import { types } from '@typegoose/typegoose';
-import { CreateOfferDto } from './dto/creat-offer.dto.js';
+import { CreateOfferDto } from './dto/create-offer.dto.js';
 import { UpdateOfferDto } from './dto/update-offer.dto.js';
 import { FavoriteEntity } from '../favorite/index.js';
 import { CommentEntity } from '../comment/comment.entity.js';
 import { OfferSummaryEntity } from './offerSummary.entity.js';
-import { DEFAULT_OFFER_MAX_LIMIT } from './offer.constant.js';
+import { DocumentType, types } from '@typegoose/typegoose';
+
 
 @injectable()
 export class DefaultOfferService implements OfferService {
@@ -25,9 +25,8 @@ export class DefaultOfferService implements OfferService {
     private readonly commentModel: types.ModelType<CommentEntity>
   ) {}
 
-  public async create(
-    dto: CreateOfferDto
-  ): Promise<types.DocumentType<OfferEntity>> {
+  public async create(dto: CreateOfferDto): Promise<DocumentType<OfferEntity>> {
+
     const result = await this.offerModel.create(dto);
     this.logger.info(`New offer created: ${dto.title}`);
 
@@ -35,48 +34,31 @@ export class DefaultOfferService implements OfferService {
   }
 
   public async findById(
-    //offerId: string,
-    userId: string
+    offerId: string
   ): Promise<
     (types.DocumentType<OfferEntity> & { isFavorite: boolean }) | null
   > {
-    const offer = await this.offerModel.findById(userId).exec();
+    const offer = await this.offerModel.findById(offerId).populate('userId').exec();
 
     if (!offer) {
       return null;
     }
 
-    const isFavorite = await this.favoriteModel
-      .findOne({ userId, offerId })
-      .exec();
+    // const isFavorite = await this.favoriteModel
+    //   .findOne({ userId, offerId })
+    //   .exec();
 
-    offer.isFavorite = Boolean(isFavorite);
+    // offer.isFavorite = Boolean(isFavorite);
 
     return offer;
   }
 
 
-  public async find(
-    userId: string,
-    count?: number
-  ): Promise<types.DocumentType<OfferSummaryEntity>[]> {
-    const limit =
-      count && count > DEFAULT_OFFER_MAX_LIMIT
-        ? DEFAULT_OFFER_MAX_LIMIT
-        : count;
-
-    const offers = await this.offerSummaryModel
+  public async find(): Promise<DocumentType<OfferEntity>[]> {
+    return this.offerModel
       .find()
-      .limit(limit ?? DEFAULT_OFFER_MAX_LIMIT)
+      .populate(['userId'])
       .exec();
-
-    return this.withFavorites(offers, userId);
-  }
-
-  public async deleteById(
-    offerId: string
-  ): Promise<types.DocumentType<OfferEntity> | null> {
-    return this.offerModel.findByIdAndDelete(offerId).exec();
   }
 
   public async updateById(
@@ -85,8 +67,40 @@ export class DefaultOfferService implements OfferService {
   ): Promise<types.DocumentType<OfferEntity> | null> {
     return this.offerModel
       .findByIdAndUpdate(offerId, dto, { new: true })
+      .populate(['userId'])
       .exec();
   }
+
+  public async exists(documentId: string): Promise<boolean> {
+    return (await this.offerModel
+      .exists({_id: documentId})) !== null;
+  }
+
+  public async findNew(count: number): Promise<DocumentType<OfferEntity>[]> {
+    return this.offerModel
+      .find()
+      .sort({ createdAt: SortType.Down })
+      .limit(count)
+      .populate(['userId'])
+      .exec();
+  }
+
+  public async findDiscussed(count: number): Promise<DocumentType<OfferEntity>[]> {
+    return this.offerModel
+      .find()
+      .sort({ commentCount: SortType.Down })
+      .limit(count)
+      .populate(['userId'])
+      .exec();
+  }
+
+
+  public async deleteById(
+    offerId: string
+  ): Promise<types.DocumentType<OfferEntity> | null> {
+    return this.offerModel.findByIdAndDelete(offerId).exec();
+  }
+
 
   public async findPremOffersByTown(
     userId: string,
@@ -150,7 +164,7 @@ export class DefaultOfferService implements OfferService {
   ): Promise<types.DocumentType<OfferEntity> | null> {
     const comments = await this.commentModel.find({ offerId }).exec();
 
-    const ratings = comments.map((comment) => comment.raiting);
+    const ratings = comments.map((comment) => comment.rating);
     const total = ratings.reduce((acc, cur) => (acc += cur), 0);
     const avgRating = ratings.length > 0 ? total / ratings.length : 0;
 
