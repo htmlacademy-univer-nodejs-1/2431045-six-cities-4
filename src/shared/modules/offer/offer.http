@@ -1,0 +1,24 @@
+# Объявления
+## Создать новое объявление
+
+POST http://localhost:3123/offers HTTP/1.1
+Content-Type: application/json
+
+{
+  "title": "test:title",
+   "description": "test:description",
+   "image": "test:image",
+   "date": "test:date",
+   "cost": "test:cost",
+   "city": "test:city",
+   "gallery": "test:gallery",
+   "isPremium": "test:isPremium",
+   "isFavorite": "test:isFavorite",
+   "rating": "test:rating",
+   "apartmentType": "test:apartmentType",
+   "roomCount": "test:roomCount",
+   "guestCount": "test:guestCount",
+   "amenities": "test:amenities",
+   "userId": "test:userId"
+}
+###

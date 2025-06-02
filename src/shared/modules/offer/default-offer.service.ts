@@ -35,12 +35,12 @@ export class DefaultOfferService implements OfferService {
   }
 
   public async findById(
-    offerId: string,
+    //offerId: string,
     userId: string
   ): Promise<
     (types.DocumentType<OfferEntity> & { isFavorite: boolean }) | null
   > {
-    const offer = await this.offerModel.findById(offerId).exec();
+    const offer = await this.offerModel.findById(userId).exec();
 
     if (!offer) {
       return null;
