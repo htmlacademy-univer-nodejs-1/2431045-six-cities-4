@@ -3,7 +3,7 @@ import { Component } from '../../types/component.enum.js';
 import {
   BaseController, DocumentExistsMiddleware,
   HttpError,
-  HttpMethod,
+  HttpMethod, PrivateRouteMiddleware,
   ValidateDtoMiddleware,
   ValidateObjectIdMiddleware,
 } from '../../libs/rest/index.js';
@@ -44,7 +44,10 @@ export default class OfferController extends BaseController {
       path: '/',
       method: HttpMethod.Post,
       handler: this.createOffer,
-      middlewares: [new ValidateDtoMiddleware(CreateOfferDto)]
+      middlewares: [
+        new PrivateRouteMiddleware(),
+        new ValidateDtoMiddleware(CreateOfferDto)
+      ]
     });
 
 
@@ -53,6 +56,7 @@ export default class OfferController extends BaseController {
       method: HttpMethod.Patch,
       handler: this.update,
       middlewares: [
+        new PrivateRouteMiddleware(),
         new ValidateObjectIdMiddleware('offerId'),
         new ValidateDtoMiddleware(UpdateOfferDto),
         new DocumentExistsMiddleware(this.offerService, 'Offer', 'offerId')
@@ -64,6 +68,7 @@ export default class OfferController extends BaseController {
       method: HttpMethod.Delete,
       handler: this.delete,
       middlewares: [
+        new PrivateRouteMiddleware(),
         new ValidateObjectIdMiddleware('offerId'),
         new DocumentExistsMiddleware(this.offerService, 'Offer', 'offerId')
       ]
@@ -122,7 +127,7 @@ export default class OfferController extends BaseController {
   }
 
   public async createOffer(
-    { body }: CreateOfferRequest,
+    { body, tokenPayload }: CreateOfferRequest,
     res: Response
   ): Promise<void> {
 
@@ -136,7 +141,7 @@ export default class OfferController extends BaseController {
       );
     }
 
-    const result = await this.offerService.create(body);
+    const result = await this.offerService.create({ ...body, userId: tokenPayload.id });
     const populatedResult = await result.populate('userId');
     this.created(res, fillDTO(OfferRdo, populatedResult));
   }

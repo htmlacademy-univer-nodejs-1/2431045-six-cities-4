@@ -2,12 +2,12 @@
 ## Создать комментарий
 
 POST http://localhost:3123/comments HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRvcmFuc0BvdmVybG9vay5uZXQiLCJuYW1lIjoiSmFjayIsImlkIjoiNjgyOTkzNzUyYjU5ZjUwYjU4ZWEzY2ZmIiwiaWF0IjoxNzQ4OTQxNTY3LCJleHAiOjE3NDkxMTQzNjd9.hKBG4Tz3MM7S61c6Q_ubF_CiMdgijG7CJw84YvyErKM
 Content-Type: application/json
 
 {
-  "text": "Как обстоят дела с коробками? Фирменная упаковка нету?",
+  "text": "Алёёёёё!",
   "offerId": "683d55a34bb98140ef63ae12",
-  "userId": "682993752b59f50b58ea3cff",
   "rating": 5
 }
 

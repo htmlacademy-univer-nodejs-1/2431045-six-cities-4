@@ -64,17 +64,43 @@ paths:
 
         '409':
           description: Пользователь с таким email уже существует
+
   /users/login:
     post:
       tags:
         - users
       summary: Авторизация пользователя
       description: Авторизует пользователя на основе логина и пароля
+
+      requestBody:
+        description: Информация для авторизации.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/loginUser'
+        required: true
+
+      responses:
+        '201':
+          description: Пользователь авторизирован.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/userAuthorized'
+    
     get:
       tags:
         - users
       summary: Проверка состояния пользователя.
       description: Возвращает информацию по авторизированном пользователю.
+
+      responses:
+        '201':
+          description: Пользователь точно авторизирован.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/isAuthorized'
 
   /offers:
     get:
