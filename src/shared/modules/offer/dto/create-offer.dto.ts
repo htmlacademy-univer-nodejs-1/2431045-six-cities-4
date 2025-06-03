@@ -7,7 +7,6 @@ import {
   IsDateString,
   IsEnum,
   IsIn,
-  IsMongoId,
   IsNumber,
   IsString,
   Max,
@@ -87,6 +86,5 @@ export class CreateOfferDto {
   })
   public amenities: Amenity[];
 
-  @IsMongoId({ message: CreateOfferValidationMessage.userId.invalidId })
   public userId: string;
 }

@@ -19,7 +19,6 @@ Content-Type: application/json
    "roomCount": 4,
    "guestCount": 5,
    "amenities": ["Breakfast"],
-   "userId": "682993752b59f50b58ea3cff"
 }
 ###
 
