@@ -11,3 +11,5 @@ coverage
 *.log
 .env
 test-*.*
+
+/upload/

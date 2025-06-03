@@ -47,7 +47,7 @@ PATCH http://localhost:3123/offers/683d55a34bb98140ef63ae12 HTTP/1.1
 Content-Type: application/json
 
 {
-  "title": "Ночной дозор 5",
+  "title": "Ночной дозор 7",
   "description": "Проверка обновления Проверка обновления Проверка обновления Проверка обновления",
   "cost": 1100
 }

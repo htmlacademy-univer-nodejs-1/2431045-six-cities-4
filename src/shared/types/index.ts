@@ -8,3 +8,4 @@ export * from './component.enum.js';
 
 export * from './offer/index.js';
 export * from './sort-type.enum.js';
+export * from './document-exists.interface.js';
