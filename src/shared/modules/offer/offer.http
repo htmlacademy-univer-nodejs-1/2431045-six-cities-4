@@ -63,3 +63,20 @@ GET http://localhost:3123/offers/683d55a34bb98140ef63ae12/comments HTTP/1.1
 GET http://localhost:3123/offers/bundles/new HTTP/1.1
 
 ###
+
+
+## Загрузить изображение для объявления
+POST http://localhost:3123/offers/683d55a34bb98140ef63ae12/image HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRvcmFuc0BvdmVybG9vay5uZXQiLCJuYW1lIjoiSmFjayIsImlkIjoiNjgyOTkzNzUyYjU5ZjUwYjU4ZWEzY2ZmIiwiaWF0IjoxNzQ5MDI0Nzk4LCJleHAiOjE3NDkxOTc1OTh9.n_VeFc9Iq4IBRNV2hANXo2eWCV9Ztb8MrLy58f_pF54
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="image"; filename="image.png"
+Content-Type: image/png
+
+< /Users/User/Desktop/image.png
+------WebKitFormBoundary7MA4YWxkTrZu0gW--
+
+###
+
+###

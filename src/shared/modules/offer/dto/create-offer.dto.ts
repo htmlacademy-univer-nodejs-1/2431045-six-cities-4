@@ -33,8 +33,6 @@ export class CreateOfferDto {
   })
   public description: string;
 
-  @MaxLength(256, { message: CreateOfferValidationMessage.image.maxLength })
-  public image: string;
 
   @IsDateString(
     {},
@@ -49,6 +47,9 @@ export class CreateOfferDto {
 
   @IsEnum(CityType, { message: CreateOfferValidationMessage.city.invalidCity })
   public city: CityType;
+
+  @MaxLength(256, { message: CreateOfferValidationMessage.previewImage.maxLength })
+  public previewImage: string;
 
   @IsArray()
   @ArrayMinSize(6, { message: CreateOfferValidationMessage.gallery.minLength })

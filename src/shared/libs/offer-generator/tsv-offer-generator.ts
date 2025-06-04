@@ -16,7 +16,7 @@ export class TSVOfferGenerator implements OfferGenerator {
 
     const city = getRandomItem(this.mockData.cities);
     const previewImage = getRandomItem(this.mockData.previewImages);
-    const photos = getRandomItems(this.mockData.photos).join(',');
+    const photos = this.mockData.photos[Math.floor(Math.random() * this.mockData.photos.length)];
     const premium = getRandomItem(this.mockData.premium);
     const favorite = getRandomItem(this.mockData.favorite);
     const rating = getRandomItem(this.mockData.ratings).toString();
@@ -28,14 +28,13 @@ export class TSVOfferGenerator implements OfferGenerator {
     const author = getRandomItem(this.mockData.users);
     const commentsCount = getRandomItem(this.mockData.commentsCounts).toString();
 
-    const coordinates = getRandomItem<{ latitude: number; longitude: number }>(
-      this.mockData.coordinates
-    );
-
+    const coordinates = this.mockData.coordinates[this.mockData.cities.indexOf(city)];
     const createdDate = dayjs(date).format('MM-DD-YYYY');
     const stringAuthor = JSON.stringify(author);
+
     const stringAmenity = JSON.stringify(amenities);
-    const stringGallery = JSON.stringify(photos);
+    const amenitiesArray = stringAmenity.split(',').map(item => item.trim());
+
 
     const resultOfGenerating = [
       title,
@@ -43,7 +42,7 @@ export class TSVOfferGenerator implements OfferGenerator {
       createdDate,
       city,
       previewImage,
-      stringGallery,
+      photos,
       premium,
       favorite,
       rating,
@@ -51,13 +50,11 @@ export class TSVOfferGenerator implements OfferGenerator {
       rooms,
       guests,
       price,
-      stringAmenity,
+      amenitiesArray,
       stringAuthor,
       commentsCount,
       coordinates
     ].join('\t');
-
-    console.log(resultOfGenerating);
 
     return resultOfGenerating;
   }
