@@ -5,7 +5,23 @@ POST http://localhost:3123/users/register HTTP/1.1
 Content-Type: application/json
 
 {
-  "email": "zxc@mail.ru",
+  "email": "charlie@mail.ru",
+  "avatar": "torrance.png",
+  "name": "Jack",
+  "lastname": "Torrance",
+  "password": "shining",
+  "userType": "pro"
+}
+
+###
+
+## Создать нового пользователя когда ты залогирован
+
+POST http://localhost:3123/users/register HTTP/1.1
+Content-Type: application/json
+
+{
+  "email": "ch3452@mail.ru",
   "avatar": "torrance.png",
   "name": "Jack",
   "lastname": "Torrance",
@@ -37,7 +53,7 @@ POST http://localhost:3123/users/login HTTP/1.1
 Content-Type: application/json
 
 {
-  "email": "torans@overlook.net",
+  "email": "zxc@mail.ru",
   "password": "shining"
 }
 
@@ -46,7 +62,7 @@ Content-Type: application/json
 ## Проверить токен пользователя
 
 GET http://localhost:3123/users/login HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRvcmFuc0BvdmVybG9vay5uZXQiLCJuYW1lIjoiSmFjayIsImlkIjoiNjgyOTkzNzUyYjU5ZjUwYjU4ZWEzY2ZmIiwiaWF0IjoxNzQ4OTQxNTY3LCJleHAiOjE3NDkxMTQzNjd9.hKBG4Tz3MM7S61c6Q_ubF_CiMdgijG7CJw84YvyErKM
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Inp4Y0BtYWlsLnJ1IiwibmFtZSI6IkphY2siLCJpZCI6IjY4NDE4MWUyZmIwYTQ5NjQ0NjM2ODkyYyIsImlhdCI6MTc0OTEzMzkxNSwiZXhwIjoxNzQ5MzA2NzE1fQ.YQDVYSqAFI8dXnMs-MPEIEjFlo75mgY3wEOVZbZ24x4
 
 ###
 

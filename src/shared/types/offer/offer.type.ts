@@ -2,6 +2,7 @@ import { User } from '../user/user.type.js';
 import { Amenity } from './amenity-type.enum.js';
 import { ApartmentType } from './apartment-type.enum.js';
 import { CityType } from './city-type.enum.js';
+import { Coordinates } from './coordinates.type.js';
 
 export type Offer = {
     title: string;
@@ -13,13 +14,12 @@ export type Offer = {
     premium: boolean;
     favorite: boolean;
     rating: number;
-    housingType: ApartmentType;
+    apartmentType: ApartmentType;
     rooms: number;
     guests: number;
     price: number;
     amenities: Amenity[];
     author: User;
     commentsCount: number;
-    latitude: number;
-    longitude: number;
+    coordinates: Coordinates;
 }

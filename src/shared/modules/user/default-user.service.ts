@@ -37,8 +37,13 @@ export class DefaultUserService implements UserService {
     if (existedUser) {
       return existedUser;
     }
+    
+    const user = new UserEntity({ ...dto, avatar: DEFAULT_AVATAR_FILE_NAME });
+    user.setPassword(dto.password, salt);
+    const result = await this.userModel.create(user);
+    this.logger.info(`New user created ${user.email}`);
 
-    return this.create(dto, salt);
+    return result;
   }
 
   public async updateById(userId: string, dto: UpdateUserDto): Promise<DocumentType<UserEntity> | null> {

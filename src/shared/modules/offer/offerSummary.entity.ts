@@ -22,7 +22,7 @@ export class OfferSummaryEntity extends defaultClasses.TimeStamps {
   public title: string;
 
     @prop({type:Number})
-    public cost: number;
+    public price: number;
 
     @prop({
       type: () => String,

@@ -2,29 +2,30 @@
 ## Создать новое объявление
 
 POST http://localhost:3123/offers HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Inp4Y0BtYWlsLnJ1IiwibmFtZSI6IkphY2siLCJpZCI6IjY4NDE4MWUyZmIwYTQ5NjQ0NjM2ODkyYyIsImlhdCI6MTc0OTEyMzYyMywiZXhwIjoxNzQ5Mjk2NDIzfQ.vLd0UuAId8te5wXbDVYWC-fUGFX_lfYxhospUCMclGA
 Content-Type: application/json
 
 {
   "title": "test:title",
    "description": "Очень круто!Очень круто!Очень круто!Очень круто!Очень круто!",
-   "image": "test:image",
-   "date": "2025-02-15T00:00:00.000Z",
-   "cost": 1500,
+   "previewImage": "test:image",
+   "date": "2022-02-15T00:00:00.000Z",
+   "price": 1500,
    "city": "Paris",
    "gallery": ["fdgdfhfhfdhdf","fdgdfhfhfdhdf","fdgdfhfhfdhdf","fdgdfhfhfdhdf","fdgdfhfhfdhdf","fdgdfhfhfdhdf"],
-   "isPremium": false,
+   "isPremium": true,
    "isFavorite": true,
    "rating": 4.5,
    "apartmentType": "hotel",
    "roomCount": 4,
    "guestCount": 5,
-   "amenities": ["Breakfast"],
+   "amenities": ["Breakfast"]
 }
 ###
 
 
 # Получить объявление по идентификатору
-GET http://localhost:3123/offers/68282c46e934e29b8d7e4296 HTTP/1.1
+GET http://localhost:3123/offers/684194626d7930e622c80def HTTP/1.1
 
 ###
 
@@ -35,26 +36,29 @@ GET http://localhost:3123/offers HTTP/1.1
 
 ## Удалить объявление по идентификатору
 
-DELETE http://localhost:3123/offers/683d62b3a14413961dd5f585 HTTP/1.1
+DELETE http://localhost:3123/offers/684196206d7930e622c80e0f HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Inp4Y0BtYWlsLnJ1IiwibmFtZSI6IkphY2siLCJpZCI6IjY4NDE4MWUyZmIwYTQ5NjQ0NjM2ODkyYyIsImlhdCI6MTc0OTEyODQ4NSwiZXhwIjoxNzQ5MzAxMjg1fQ.hjgIB4B9QYZ5eVKc00iBCVIR5TWgRny_PwfJkRbWx7k
+
 
 ###
 
 
 ## Обновить объявление
 
-PATCH http://localhost:3123/offers/683d55a34bb98140ef63ae12 HTTP/1.1
+PATCH http://localhost:3123/offers/6841b7cfdeb5a80ae81ad51d HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Inp4Y0BtYWlsLnJ1IiwibmFtZSI6IkphY2siLCJpZCI6IjY4NDE4MWUyZmIwYTQ5NjQ0NjM2ODkyYyIsImlhdCI6MTc0OTEyODQ4NSwiZXhwIjoxNzQ5MzAxMjg1fQ.hjgIB4B9QYZ5eVKc00iBCVIR5TWgRny_PwfJkRbWx7k
 Content-Type: application/json
 
 {
-  "title": "Ночной дозор 7",
+  "title": "Ночной дозор 5",
   "description": "Проверка обновления Проверка обновления Проверка обновления Проверка обновления",
-  "cost": 1100
+  "price": 1100
 }
 
 ###
 
 ## Список комментариев к объявлению
-GET http://localhost:3123/offers/683d55a34bb98140ef63ae12/comments HTTP/1.1
+GET http://localhost:3123/offers/6841b7cfdeb5a80ae81ad51d/comments HTTP/1.1
 
 ###
 
@@ -63,6 +67,30 @@ GET http://localhost:3123/offers/683d55a34bb98140ef63ae12/comments HTTP/1.1
 GET http://localhost:3123/offers/bundles/new HTTP/1.1
 
 ###
+
+## Список премиальных предложений
+GET http://localhost:3123/offers/Paris/premium HTTP/1.1
+
+###
+
+## Список избранных предложений
+GET http://localhost:3123/offers/favorites HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Inp4Y0BtYWlsLnJ1IiwibmFtZSI6IkphY2siLCJpZCI6IjY4NDE4MWUyZmIwYTQ5NjQ0NjM2ODkyYyIsImlhdCI6MTc0OTEyODQ4NSwiZXhwIjoxNzQ5MzAxMjg1fQ.hjgIB4B9QYZ5eVKc00iBCVIR5TWgRny_PwfJkRbWx7k
+
+###
+
+## Добавление предложение в избранное
+POST http://localhost:3123/offers/6841b7cfdeb5a80ae81ad51d/favorite HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Inp4Y0BtYWlsLnJ1IiwibmFtZSI6IkphY2siLCJpZCI6IjY4NDE4MWUyZmIwYTQ5NjQ0NjM2ODkyYyIsImlhdCI6MTc0OTEyODQ4NSwiZXhwIjoxNzQ5MzAxMjg1fQ.hjgIB4B9QYZ5eVKc00iBCVIR5TWgRny_PwfJkRbWx7k
+
+###
+
+## Удаление предложение в избранное
+DELETE http://localhost:3123/offers/6841b7cfdeb5a80ae81ad51d/favorite HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Inp4Y0BtYWlsLnJ1IiwibmFtZSI6IkphY2siLCJpZCI6IjY4NDE4MWUyZmIwYTQ5NjQ0NjM2ODkyYyIsImlhdCI6MTc0OTEyODQ4NSwiZXhwIjoxNzQ5MzAxMjg1fQ.hjgIB4B9QYZ5eVKc00iBCVIR5TWgRny_PwfJkRbWx7k
+
+###
+
 
 
 ## Загрузить изображение для объявления

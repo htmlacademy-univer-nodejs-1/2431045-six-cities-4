@@ -1,6 +1,8 @@
 import { ClassConstructor, plainToInstance } from 'class-transformer';
 import { ValidationError } from 'class-validator';
 import { ValidationErrorField, ApplicationError} from '../libs/rest/index.js';
+import { CityType } from '../types/index.js';
+import { COORDINATES_BY_CITY } from '../types/offer/coordinates.constant.js';
 
 
 export function generateRandomValue(min:number, max:number, numAfterDigit = 0){
@@ -37,6 +39,19 @@ export function reduceValidationErrors(errors: ValidationError[]): ValidationErr
   }));
 }
 
+export function getCoordinatesByTown(city: CityType) {
+  return COORDINATES_BY_CITY[city];
+}
+
 export function getFullServerPath(host: string, port: number) {
   return `http://${host}:${port}`;
+}
+
+export function getEnumKeyByValue<T extends Record<string, string>>(
+  enumObj: T,
+  value: string
+): keyof T | undefined {
+  return (Object.keys(enumObj) as Array<keyof T>).find(
+    (key) => enumObj[key] === value
+  );
 }

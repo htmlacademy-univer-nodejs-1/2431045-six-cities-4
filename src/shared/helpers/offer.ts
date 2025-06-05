@@ -1,5 +1,7 @@
-import { Amenity, ApartmentType, CityType, Offer} from '../types/index.js';
+import { Amenity, ApartmentType, CityType, Offer, User} from '../types/index.js';
+import { Coordinates } from '../types/offer/coordinates.type.js';
 import { UserType } from '../types/user/user-type.enum.js';
+import { getEnumKeyByValue } from './common.js';
 
 export function createOffer(offerData: string): Offer {
   const [
@@ -12,17 +14,20 @@ export function createOffer(offerData: string): Offer {
     premium,
     favorite,
     rating,
-    housingType,
+    apartmentType,
     rooms,
     guests,
     price,
     amenities,
     author,
     commentsCount,
-    latitude,
-    longitude,
+    coordinates,
   ] = offerData.replace('\n', '').split('\t');
 
+  const parsedAuthor = JSON.parse(author);
+
+  const apartmentTypeKey = getEnumKeyByValue(ApartmentType, apartmentType);
+  const userTypeKey = getEnumKeyByValue(UserType, parsedAuthor.type);
 
   return {
     title: title,
@@ -34,19 +39,16 @@ export function createOffer(offerData: string): Offer {
     premium: JSON.parse(premium),
     favorite: JSON.parse(favorite),
     rating: parseFloat(rating),
-    housingType: ApartmentType[housingType as keyof typeof ApartmentType],
+    apartmentType: ApartmentType[apartmentTypeKey!],
     rooms: Number(rooms),
     guests: Number(guests),
     price: Number(price),
     amenities: (JSON.parse(amenities) as string[]).map((a) => a as Amenity),
-    author:{
-      ...JSON.parse(author),
-      type: UserType[
-        JSON.parse(author).type as string as keyof typeof UserType
-      ]
-    },
+    author: {
+      ...parsedAuthor,
+      type: UserType[userTypeKey!],
+    } as User,
     commentsCount: Number(commentsCount),
-    latitude: Number(latitude),
-    longitude: Number(longitude)
+    coordinates: JSON.parse(coordinates) as Coordinates,
   };
 }

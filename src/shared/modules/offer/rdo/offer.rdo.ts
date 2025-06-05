@@ -13,7 +13,7 @@ export class OfferRdo {
   public date: Date;
 
   @Expose()
-  public cost: number;
+  public price: number;
 
   @Expose()
   public city: CityType;
@@ -51,4 +51,7 @@ export class OfferRdo {
 
   @Expose()
   public commentsCount: number;
+
+  @Expose()
+  public coordinates:number
 }

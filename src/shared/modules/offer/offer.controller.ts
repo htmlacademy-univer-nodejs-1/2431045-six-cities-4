@@ -3,26 +3,28 @@ import { Component } from '../../types/component.enum.js';
 import {
   BaseController,
   DocumentExistsMiddleware,
-  HttpError,
   HttpMethod,
   PrivateRouteMiddleware, UploadFileMiddleware,
   ValidateDtoMiddleware,
   ValidateObjectIdMiddleware,
 } from '../../libs/rest/index.js';
 import { Logger } from '../../libs/logger/index.js';
-import { StatusCodes } from 'http-status-codes';
 import { Request, Response } from 'express';
 import { OfferService } from './offer-service.interface.js';
 import { CreateOfferRequest } from './create-offer-request.type.js';
-import { fillDTO } from '../../helpers/common.js';
+import { fillDTO, getCoordinatesByTown } from '../../helpers/common.js';
 import { OfferRdo } from './rdo/offer.rdo.js';
 import { ParamOfferId } from './type/param-offerid.type.js';
 import { UpdateOfferDto } from './dto/update-offer.dto.js';
+import { ParamsDictionary } from 'express-serve-static-core';
+import { QueryCount } from './type/query-count.type.js';
 import { CommentRdo, CommentService } from '../comment/index.js';
 import { DEFAULT_DISCUSSED_OFFER_COUNT, DEFAULT_NEW_OFFER_COUNT } from './offer.constant.js';
 import { CreateOfferDto } from './dto/create-offer.dto.js';
 import { Config, RestSchema } from '../../libs/config/index.js';
 import { UploadImageRdo } from './rdo/upload-image.rdo.js';
+import { OfferSummaryRdo } from './rdo/offerSummary.rdo.js';
+import { ParamCity } from './type/param-town.type.js';
 
 @injectable()
 export default class OfferController extends BaseController {
@@ -36,14 +38,21 @@ export default class OfferController extends BaseController {
 
     this.logger.info('Register routes for OfferController');
 
-    this.addRoute({ path: '/:offerId', method: HttpMethod.Get, handler: this.show,
+
+    this.addRoute({ path: '/', method: HttpMethod.Get, handler: this.getAllOffers });
+
+        this.addRoute({
+      path: '/favorites',
+      method: HttpMethod.Get,
+      handler: this.getFavoriteOffers,
+      middlewares: [new PrivateRouteMiddleware()],
+    });
+
+    this.addRoute({ path: '/:offerId', method: HttpMethod.Get, handler: this.getOfferById,
       middlewares: [
         new ValidateObjectIdMiddleware('offerId'),
         new DocumentExistsMiddleware(this.offerService, 'Offer', 'offerId'),
-      ] });
-
-
-    this.addRoute({ path: '/', method: HttpMethod.Get, handler: this.index });
+      ]});
 
     this.addRoute({
       path: '/',
@@ -66,6 +75,28 @@ export default class OfferController extends BaseController {
         new ValidateDtoMiddleware(UpdateOfferDto),
         new DocumentExistsMiddleware(this.offerService, 'Offer', 'offerId')
       ]
+    });
+
+    this.addRoute({
+      path: '/:offerId/favorite',
+      method: HttpMethod.Post,
+      handler: (req, res, _next) =>
+        this.addToFavourites(req as Request<ParamOfferId>, res),
+      middlewares: [
+        new ValidateObjectIdMiddleware('offerId'),
+        new DocumentExistsMiddleware(this.offerService, 'Offer', 'offerId'),
+      ],
+    });
+
+    this.addRoute({
+      path: '/:offerId/favorite',
+      method: HttpMethod.Delete,
+      handler: (req, res, _next) =>
+        this.removeFromFavourites(req as Request<ParamOfferId>, res),
+      middlewares: [
+        new ValidateObjectIdMiddleware('offerId'),
+        new DocumentExistsMiddleware(this.offerService, 'Offer', 'offerId'),
+      ],
     });
 
     this.addRoute({
@@ -108,44 +139,33 @@ export default class OfferController extends BaseController {
     this.addRoute({
       path: '/:city/premium',
       method: HttpMethod.Get,
-      handler: this.getPremiumOffersByTown,
-    });
-
-    this.addRoute({
-      path: '/favourites',
-      method: HttpMethod.Get,
-      handler: this.getFavouriteOffers,
-    });
-
-    this.addRoute({
-      path: '/:offerId/favorite',
-      method: HttpMethod.Post,
-      handler: this.addToFavourites,
-    });
-
-    this.addRoute({
-      path: '/:offerId/favorite',
-      method: HttpMethod.Delete,
-      handler: this.removeFromFavourites,
+      handler: (req, res, _next) => 
+        this.getPremiumOffersByCity(req as Request<ParamCity>, res),
     });
   }
 
-  public async show({ params }: Request<ParamOfferId>, res: Response): Promise<void> {
-    const { offerId } = params;
-    const offer = await this.offerService.findById(offerId);
+  public async getAllOffers({
+    query,
+    tokenPayload,
+  }: Request<ParamsDictionary, unknown, unknown, QueryCount>,
+  res: Response
+): Promise<void> {
+  const count = query.count ? parseInt(query.count, 10) : 60;
 
-    this.ok(res, fillDTO(OfferRdo, offer));
-  }
+  const userId = tokenPayload ? tokenPayload.id : undefined;
 
-  public async index(_req: Request, res: Response) {
-    const offers = await this.offerService.find();
-    this.ok(res, fillDTO(OfferRdo, offers));
-  }
+  const offers = await this.offerService.find(count, userId);
 
-  public async uploadImage({ params, file } : Request<ParamOfferId>, res: Response) {
+  this.ok(res, fillDTO(OfferSummaryRdo, offers));
+}
+
+
+
+
+  public async uploadImage({ params, file, tokenPayload } : Request<ParamOfferId>, res: Response) {
     const { offerId } = params;
     const updateDto = { previewImage: file?.filename };
-    await this.offerService.updateById(offerId, updateDto);
+    await this.offerService.updateById(offerId, updateDto, tokenPayload.id );
     this.created(res, fillDTO(UploadImageRdo, updateDto));
   }
 
@@ -153,49 +173,42 @@ export default class OfferController extends BaseController {
     { body, tokenPayload }: CreateOfferRequest,
     res: Response
   ): Promise<void> {
-
-    const existOffer = await this.offerService.findById(body.userId);
-
-    if (existOffer) {
-      throw new HttpError(
-        StatusCodes.UNPROCESSABLE_ENTITY,
-        `Offer with userId «${body.userId}» exists.`,
-        'OfferController'
-      );
-    }
-
-    const result = await this.offerService.create({ ...body, userId: tokenPayload.id });
-    const populatedResult = await result.populate('userId');
-    this.created(res, fillDTO(OfferRdo, populatedResult));
-  }
-
-
-  public async getAllOffers(_req: Request, _res: Response): Promise<void> {
-    throw new HttpError(
-      StatusCodes.NOT_IMPLEMENTED,
-      'Not implemented',
-      'OfferController'
+    const result = await this.offerService.create({
+      ...body,
+      userId: tokenPayload.id,
+      commentCount: 0,
+      coordinates: getCoordinatesByTown(body.city),
+    });
+    const offer = await this.offerService.findById(
+      result.id,
+      result.userId.toString()
     );
+
+    this.created(res, fillDTO(OfferRdo, offer));
   }
 
 
-  public async getOfferById(_req: Request, _res: Response): Promise<void> {
-    throw new HttpError(
-      StatusCodes.NOT_IMPLEMENTED,
-      'Not implemented',
-      'OfferController'
-    );
+
+  public async getOfferById(
+    { params, tokenPayload }: Request,
+    res: Response
+  ): Promise<void> {
+    const userId = tokenPayload ? tokenPayload.id.toString() : null;
+    const { offerId } = params;
+    const offer = await this.offerService.findById(offerId, userId);
+
+    this.ok(res, fillDTO(OfferRdo, offer));
   }
 
-  public async update({ body, params }: Request<ParamOfferId, unknown, UpdateOfferDto>, res: Response): Promise<void> {
-    const updatedOffer = await this.offerService.updateById(params.offerId, body);
+  public async update({ body, params, tokenPayload  }: Request<ParamOfferId, unknown, UpdateOfferDto>, res: Response): Promise<void> {
+    const updatedOffer = await this.offerService.updateById(params.offerId, body, tokenPayload.id);
 
     this.ok(res, fillDTO(OfferRdo, updatedOffer));
   }
 
-  public async delete({ params }: Request<ParamOfferId>, res: Response): Promise<void> {
+  public async delete({ params, tokenPayload }: Request<ParamOfferId>, res: Response): Promise<void> {
     const { offerId } = params;
-    const offer = await this.offerService.deleteById(offerId);
+    const offer = await this.offerService.deleteById(offerId, tokenPayload.id);
 
     await this.commentService.deleteByOfferId(offerId);
 
@@ -219,44 +232,47 @@ export default class OfferController extends BaseController {
   }
 
 
-  public async getPremiumOffersByTown(
-    _req: Request,
-    _res: Response
+  public async getPremiumOffersByCity(
+    { params, tokenPayload }: Request<ParamCity>,
+    res: Response
   ): Promise<void> {
-    throw new HttpError(
-      StatusCodes.NOT_IMPLEMENTED,
-      'Not implemented',
-      'OfferController'
-    );
+    const userId = tokenPayload ? tokenPayload.id.toString() : null;
+    const { city } = params;
+    const offers = await this.offerService.findPremOffersByCity(userId, city);
+
+    this.ok(res, fillDTO(OfferSummaryRdo, offers));
   }
 
-  public async getFavouriteOffers(
-    _req: Request,
-    _res: Response
+  public async getFavoriteOffers(
+    { tokenPayload }: Request,
+    res: Response
   ): Promise<void> {
-    throw new HttpError(
-      StatusCodes.NOT_IMPLEMENTED,
-      'Not implemented',
-      'OfferController'
-    );
+    const offers = await this.offerService.getUserFavorites(tokenPayload.id);
+
+    this.ok(res, fillDTO(OfferSummaryRdo, offers));
   }
 
-  public async addToFavourites(_req: Request, _res: Response): Promise<void> {
-    throw new HttpError(
-      StatusCodes.NOT_IMPLEMENTED,
-      'Not implemented',
-      'OfferController'
+  public async addToFavourites(
+    { params, tokenPayload }: Request<ParamOfferId>,
+    res: Response
+  ): Promise<void> {
+    const offer = await this.offerService.addFavorite(
+      tokenPayload.id,
+      params.offerId
     );
+
+    this.ok(res, fillDTO(OfferSummaryRdo, offer));
   }
 
   public async removeFromFavourites(
-    _req: Request,
-    _res: Response
+    { params, tokenPayload }: Request<ParamOfferId>,
+    res: Response
   ): Promise<void> {
-    throw new HttpError(
-      StatusCodes.NOT_IMPLEMENTED,
-      'Not implemented',
-      'OfferController'
+    const isDeleted = await this.offerService.deleteFavorite(
+      tokenPayload.id,
+      params.offerId
     );
+
+    this.ok(res, isDeleted === true);
   }
 }

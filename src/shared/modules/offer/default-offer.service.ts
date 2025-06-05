@@ -9,6 +9,9 @@ import { FavoriteEntity } from '../favorite/index.js';
 import { CommentEntity } from '../comment/comment.entity.js';
 import { OfferSummaryEntity } from './offerSummary.entity.js';
 import { DocumentType, types } from '@typegoose/typegoose';
+import { HttpError } from '../../libs/rest/index.js';
+import { StatusCodes } from 'http-status-codes';
+import { DEFAULT_PREMIUM_BY_TOWN_MAX_LIMIT } from './offer.constant.js';
 
 
 @injectable()
@@ -34,37 +37,63 @@ export class DefaultOfferService implements OfferService {
   }
 
   public async findById(
-    offerId: string
+    offerId: string,
+    userId: string | null
   ): Promise<
     (types.DocumentType<OfferEntity> & { isFavorite: boolean }) | null
   > {
-    const offer = await this.offerModel.findById(offerId).populate('userId').exec();
+    const offer = await this.offerModel.findById(offerId).populate(['userId']).exec();
 
-    if (!offer) {
-      return null;
+    if (userId) {
+      const isFavorite = await this.favoriteModel
+        .findOne({ userId, offerId })
+        .exec();
+
+      offer!.isFavorite = Boolean(isFavorite);
     }
-
-    // const isFavorite = await this.favoriteModel
-    //   .findOne({ userId, offerId })
-    //   .exec();
-
-    // offer.isFavorite = Boolean(isFavorite);
 
     return offer;
   }
 
 
-  public async find(): Promise<DocumentType<OfferEntity>[]> {
-    return this.offerModel
+  public async find(
+    count: number,
+    userId?: string
+  ): Promise<OfferSummaryEntity[]> {
+    const offers = await this.offerSummaryModel
       .find()
-      .populate(['userId'])
+      .sort({ date: -1 })
+      .limit(count)
+      .lean<OfferSummaryEntity[]>()
       .exec();
+
+    const normalizedOffers = offers.map((offer) => ({
+      ...offer,
+      id: offer._id.toString(),
+    }));
+
+    if (userId) {
+      return this.withFavorites(normalizedOffers, userId);
+    }
+
+    return normalizedOffers;
   }
 
   public async updateById(
     offerId: string,
-    dto: UpdateOfferDto
+    dto: UpdateOfferDto,
+    userId: string
   ): Promise<types.DocumentType<OfferEntity> | null> {
+    const existingOffer = await this.offerModel.findById(offerId).exec();
+
+    if (existingOffer!.userId.toString() !== userId) {
+      throw new HttpError(
+        StatusCodes.CONFLICT,
+        'You are not the author',
+        'OfferController'
+      );
+    }
+
     return this.offerModel
       .findByIdAndUpdate(offerId, dto, { new: true })
       .populate(['userId'])
@@ -96,25 +125,57 @@ export class DefaultOfferService implements OfferService {
 
 
   public async deleteById(
-    offerId: string
+    offerId: string,
+    userId: string
   ): Promise<types.DocumentType<OfferEntity> | null> {
+
+    const existingOffer = await this.offerModel.findById(offerId).exec();
+
+    if (existingOffer!.userId.toString() !== userId) {
+      throw new HttpError(
+        StatusCodes.CONFLICT,
+        'You are not the author',
+        'OfferController'
+      );
+    }
+
     return this.offerModel.findByIdAndDelete(offerId).exec();
   }
 
 
-  public async findPremOffersByTown(
-    userId: string,
+  public async findPremOffersByCity(
+    userId: string | null,
     city: CityType
-  ): Promise<types.DocumentType<OfferSummaryEntity>[]> {
-    const offers = await this.offerSummaryModel.find({ city }).exec();
+  ): Promise<OfferSummaryEntity[]> {
+    const offers = await this.offerSummaryModel
+      .find({ city, isPremium: true })
+      .limit(DEFAULT_PREMIUM_BY_TOWN_MAX_LIMIT)
+      .sort({ date: -1 })
+      .lean<OfferSummaryEntity[]>()
+      .exec();  
 
-    return this.withFavorites(offers, userId);
+    const normalizedOffers = offers.map((offer) => ({
+      ...offer,
+      id: offer._id.toString(),
+    }));
+
+    if (userId) {
+      return this.withFavorites(normalizedOffers, userId);
+    }
+    return normalizedOffers;
   }
+
+
 
   public async getUserFavorites(
     userId: string
   ): Promise<types.DocumentType<OfferSummaryEntity>[]> {
     const favorites = await this.favoriteModel.find({ userId }).exec();
+
+    if (favorites.length === 0) {
+      return [];
+    }
+
     const offerIds = favorites.map((fav) => fav.offerId);
 
     return this.offerSummaryModel.find({ _id: { $in: offerIds } }).exec();
@@ -128,23 +189,32 @@ export class DefaultOfferService implements OfferService {
       .findOne({ userId, offerId })
       .exec();
 
-    if (!existing) {
-      await this.favoriteModel.create({ userId, offerId });
+    if (existing) {
+      throw new HttpError(
+        StatusCodes.CONFLICT,
+        'This offer has been already added to favorite',
+        'OfferController'
+      );
     }
+
+    await this.favoriteModel.create({ userId, offerId });
 
     const offer = await this.offerSummaryModel.findById(offerId).exec();
 
-    if (!offer) {
-      throw new Error('Offer not found');
-    }
+    offer!.isFavorite = true;
 
-    offer.isFavorite = true;
-
-    return offer;
+    return offer!;
   }
 
-  public async deleteFavorite(userId: string, offerId: string): Promise<void> {
-    await this.favoriteModel.deleteOne({ userId, offerId });
+  public async deleteFavorite(
+    userId: string,
+    offerId: string
+  ): Promise<boolean> {
+    const result = await this.favoriteModel
+      .deleteOne({ userId, offerId })
+      .exec();
+
+    return result.deletedCount === 1;
   }
 
   public async incCommentCount(
@@ -181,7 +251,7 @@ export class DefaultOfferService implements OfferService {
       .find({ userId })
       .lean<{ offerId: string }[]>()
       .exec();
-    const offerIds = new Set(favorites.map((f) => f.offerId.toString()));
+    const offerIds = new Set(favorites.map((f) => f.offerId));
 
     return offers.map((offer) => ({
       ...offer,

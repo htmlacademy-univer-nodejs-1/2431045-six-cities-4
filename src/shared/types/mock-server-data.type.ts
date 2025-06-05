@@ -9,7 +9,7 @@ export type MockServerData = {
     dates: Date[];
     cities: CityType[];
     previewImages: string[];
-    photos: string[][];
+    photos:string[][];
     premium: boolean[];
     favorite: boolean[];
     ratings: number[];
@@ -19,8 +19,6 @@ export type MockServerData = {
     prices: number[];
     amenities: Array<Amenity>[];
     users: User[];
-    emails: string[];
-    avatars: string[];
     commentsCounts: number[];
     coordinates: { latitude: number; longitude: number }[];
   };
