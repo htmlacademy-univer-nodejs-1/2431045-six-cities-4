@@ -1,13 +1,9 @@
 import {
-  Ref,
   defaultClasses,
   getModelForClass,
   modelOptions,
   prop,
 } from '@typegoose/typegoose';
-import { UserEntity } from '../user/index.js';
-import { OfferEntity } from '../offer/index.js';
-
   @modelOptions({
     schemaOptions: {
       collection: 'favorites',
@@ -15,17 +11,15 @@ import { OfferEntity } from '../offer/index.js';
   })
 export class FavoriteEntity extends defaultClasses.TimeStamps {
     @prop({
-      ref: UserEntity,
       required: true,
     })
-  public userId: Ref<UserEntity>;
+  public userId: string;
 
 
     @prop({
-      ref: OfferEntity,
       required: true
     })
-    public offerId: Ref<OfferEntity>;
+    public offerId: string;
 }
 
 export const FavoriteModel = getModelForClass(FavoriteEntity);

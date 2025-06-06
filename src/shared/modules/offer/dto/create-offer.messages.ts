@@ -10,8 +10,8 @@ export const CreateOfferValidationMessage = {
   date: {
     invalidFormat: 'PostDate must be a valid ISO date',
   },
-  image: {
-    maxLength: 'Too short for field «image»',
+  previewImage: {
+    maxLength: 'Too short for field «previewImage»',
   },
   city: { invalidCity: 'City must be one of the predefined cities' },
   gallery: {
@@ -34,7 +34,7 @@ export const CreateOfferValidationMessage = {
     min: 'Min 1',
     max: 'Max 10',
   },
-  cost: {
+  price: {
     min: 'Min 100',
     max: 'Max 100 000',
   },

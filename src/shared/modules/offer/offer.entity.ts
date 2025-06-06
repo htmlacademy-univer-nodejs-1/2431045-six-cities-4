@@ -1,6 +1,7 @@
 import { defaultClasses, getModelForClass, modelOptions, prop, Ref } from '@typegoose/typegoose';
 import { UserEntity } from '../user/index.js';
 import { Amenity, ApartmentType, CityType } from '../../types/index.js';
+import { Coordinates } from '../../types/offer/coordinates.type.js';
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
 export interface OfferEntity extends defaultClasses.Base {}
@@ -22,7 +23,7 @@ export class OfferEntity extends defaultClasses.TimeStamps {
   public date: Date;
 
   @prop({type: Number})
-  public cost: number;
+  public price: number;
 
   @prop({
     type: () => String,
@@ -67,7 +68,10 @@ export class OfferEntity extends defaultClasses.TimeStamps {
   public userId: Ref<UserEntity>;
 
   @prop({type:Number})
-  public commentsCount: number;
+  public commentCount: number;
+
+  @prop({ type: () => Object })
+  public coordinates: Coordinates;
 
 }
 

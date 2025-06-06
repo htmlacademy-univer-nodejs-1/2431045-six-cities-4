@@ -18,6 +18,7 @@ import {
 import { CreateOfferValidationMessage } from './create-offer.messages.js';
 import { MaxDecimalPlaces } from '../../../helpers/index.js';
 import { AMENITY_VALUES } from '../../../types/index.js';
+import { Coordinates } from '../../../types/offer/coordinates.type.js';
 
 export class CreateOfferDto {
 
@@ -33,8 +34,6 @@ export class CreateOfferDto {
   })
   public description: string;
 
-  @MaxLength(256, { message: CreateOfferValidationMessage.image.maxLength })
-  public image: string;
 
   @IsDateString(
     {},
@@ -43,12 +42,15 @@ export class CreateOfferDto {
   public date: Date;
 
   @IsNumber()
-  @Min(100, { message: CreateOfferValidationMessage.cost.min })
-  @Max(100000, { message: CreateOfferValidationMessage.cost.max })
-  public cost: number;
+  @Min(100, { message: CreateOfferValidationMessage.price.min })
+  @Max(100000, { message: CreateOfferValidationMessage.price.max })
+  public price: number;
 
   @IsEnum(CityType, { message: CreateOfferValidationMessage.city.invalidCity })
   public city: CityType;
+
+  @MaxLength(256, { message: CreateOfferValidationMessage.previewImage.maxLength })
+  public previewImage: string;
 
   @IsArray()
   @ArrayMinSize(6, { message: CreateOfferValidationMessage.gallery.minLength })
@@ -66,6 +68,9 @@ export class CreateOfferDto {
   @Validate(MaxDecimalPlaces)
   public rating: number;
 
+  @IsEnum(ApartmentType, {
+    message: CreateOfferValidationMessage.apartmentType.invalidApartment,
+  })
   public apartmentType: ApartmentType;
 
   @IsNumber()
@@ -85,6 +90,11 @@ export class CreateOfferDto {
     message: CreateOfferValidationMessage.amenities.includeAmenities,
   })
   public amenities: Amenity[];
+
+
+  public commentCount!: number;
+
+  public coordinates!: Coordinates;
 
   public userId: string;
 }

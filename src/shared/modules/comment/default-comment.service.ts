@@ -43,6 +43,7 @@ export class DefaultCommentService implements CommentService {
     return this.commentModel
       .find({ offerId })
       .limit(limit ?? DEFAULT_COMMENT_LIMIT)
+      .sort({createdAt: -1})
       .populate('userId')
       .exec();
   }

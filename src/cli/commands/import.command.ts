@@ -6,7 +6,7 @@ import { DatabaseClient, MongoDatabaseClient } from '../../shared/libs/database-
 import { Logger } from '../../shared/libs/logger/index.js';
 import { ConsoleLogger } from '../../shared/libs/logger/console.logger.js';
 import { DefaultUserService, UserModel } from '../../shared/modules/user/index.js';
-import { DEFAULT_USER_PASSWORD } from './command.constant.js';
+import { DEFAULT_DB_PORT, DEFAULT_USER_PASSWORD } from './command.constant.js';
 import { Offer } from '../../shared/types/index.js';
 import { TSVFileReader } from '../../shared/libs/file-reader/index.js';
 import { OfferSummaryModel } from '../../shared/modules/offer/offerSummary.entity.js';
@@ -60,18 +60,20 @@ export class ImportCommand implements Command {
       userId: user.id,
       title: offer.title,
       description: offer.description,
-      image: offer.previewImage,
+      previewImage: offer.previewImage,
       date: offer.date,
-      cost: offer.price,
+      price: offer.price,
       city: offer.city,
       gallery: offer.photos,
       isPremium: offer.premium,
       isFavorite: offer.favorite,
       rating: offer.rating,
-      apartmentType: offer.housingType,
+      apartmentType: offer.apartmentType,
       roomCount: offer.rooms,
       guestCount: offer.guests,
       amenities: offer.amenities,
+      commentCount: 0,
+      coordinates: offer.coordinates,
     });
   }
 
@@ -83,13 +85,12 @@ export class ImportCommand implements Command {
     filename: string,
     login: string,
     password: string,
-    port: string,
+    _port: string,
     dbname: string,
     salt: string
   ): Promise<void> {
-    const uri = getMongoURI(login, password, port, dbname);
+    const uri = getMongoURI(login, password, DEFAULT_DB_PORT, dbname);
     this.salt = salt;
-
     await this.databaseClient.connect(uri);
 
     const fileReader = new TSVFileReader(filename.trim());

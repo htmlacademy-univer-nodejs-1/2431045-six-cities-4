@@ -11,13 +11,14 @@
   "scripts": {
     "start": "npm run build && node ./dist/main.rest.js",
     "start:dev": "nodemon",
+    "cli": "npm run ts -- ./dist/main.cli.js",
     "build": "npm run clean && npm run compile",
     "lint": "eslint src/ --ext .ts --fix",
     "lint:check": "eslint src/ --ext .ts",
     "compile": "tsc -p tsconfig.json",
     "clean": "rimraf dist",
     "ts": "tsx",
-    "mock:server": "json-server ./mocks/mock-server-data.json --port 3123"
+    "mock:server": "json-server ./mocks/mock-server-data.json --port 4023"
   },
   "devDependencies": {
     "@types/convict": "^6.1.4",
