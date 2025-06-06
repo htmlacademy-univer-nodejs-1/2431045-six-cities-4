@@ -37,12 +37,13 @@ export class DefaultAuthService implements AuthService {
 
   public async verify(dto: LoginUserDto): Promise<UserEntity> {
     const user = await this.userService.findByEmail(dto.email);
-    if (! user) {
+    this.logger.warn(`Incorrect password for ${user?.password}`);
+    if (!user) {
       this.logger.warn(`User with ${dto.email} not found`);
       throw new UserNotFoundException();
     }
 
-    if (! user.verifyPassword(dto.password, this.config.get('SALT'))) {
+    if (!user.verifyPassword(dto.password, this.config.get('SALT'))) {
       this.logger.warn(`Incorrect password for ${dto.email}`);
       throw new UserPasswordIncorrectException();
     }

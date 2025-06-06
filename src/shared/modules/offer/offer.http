@@ -2,7 +2,7 @@
 ## Создать новое объявление
 
 POST http://localhost:3123/offers HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Inp4Y0BtYWlsLnJ1IiwibmFtZSI6IkphY2siLCJpZCI6IjY4NDE4MWUyZmIwYTQ5NjQ0NjM2ODkyYyIsImlhdCI6MTc0OTEyMzYyMywiZXhwIjoxNzQ5Mjk2NDIzfQ.vLd0UuAId8te5wXbDVYWC-fUGFX_lfYxhospUCMclGA
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImNoYXJsaWVAbWFpbC5ydSIsIm5hbWUiOiJKYWNrIiwiaWQiOiI2ODQyOWEzMGU5YTk5ZmVhOGY2ZmFiMzUiLCJpYXQiOjE3NDkxOTUzMTksImV4cCI6MTc0OTM2ODExOX0.1PlKWAEYGl2_AIhtoGtxUUL8VA0uwYyFUAXzMKMqfB0
 Content-Type: application/json
 
 {
@@ -25,7 +25,7 @@ Content-Type: application/json
 
 
 # Получить объявление по идентификатору
-GET http://localhost:3123/offers/684194626d7930e622c80def HTTP/1.1
+GET http://localhost:3123/offers/68429ac0e9a99fea8f6fab42 HTTP/1.1
 
 ###
 
@@ -58,7 +58,7 @@ Content-Type: application/json
 ###
 
 ## Список комментариев к объявлению
-GET http://localhost:3123/offers/6841b7cfdeb5a80ae81ad51d/comments HTTP/1.1
+GET http://localhost:3123/offers/68429ac0e9a99fea8f6fab42/comments HTTP/1.1
 
 ###
 
@@ -94,7 +94,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Inp4Y0BtYWlsLnJ1IiwibmFtZ
 
 
 ## Загрузить изображение для объявления
-POST http://localhost:3123/offers/683d55a34bb98140ef63ae12/image HTTP/1.1
+POST http://localhost:3123/offers/68429ac0e9a99fea8f6fab42/image HTTP/1.1
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRvcmFuc0BvdmVybG9vay5uZXQiLCJuYW1lIjoiSmFjayIsImlkIjoiNjgyOTkzNzUyYjU5ZjUwYjU4ZWEzY2ZmIiwiaWF0IjoxNzQ5MDI0Nzk4LCJleHAiOjE3NDkxOTc1OTh9.n_VeFc9Iq4IBRNV2hANXo2eWCV9Ztb8MrLy58f_pF54
 Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
 

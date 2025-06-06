@@ -70,18 +70,18 @@ export const configRestSchema = convict<RestSchema>({
     doc: 'Secret for sign JWT',
     format: String,
     env: 'JWT_SECRET',
-    default: 'secret-key'
+    default: null
   },
   HOST: {
     doc: 'Host where started service',
     format: String,
     env: 'HOST',
-    default: 'localhost'
+    default: null
   },
   STATIC_DIRECTORY_PATH: {
     doc: 'Path to directory with static resources',
     format: String,
     env: 'STATIC_DIRECTORY_PATH',
-    default: 'static'
+    default: null
   },
 });
