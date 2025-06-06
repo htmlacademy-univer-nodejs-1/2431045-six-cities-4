@@ -1,0 +1,13 @@
+{"level":30,"time":1749201829742,"pid":15380,"hostname":"DESKTOP-PA6I5ST","msg":"Logger created..."}
+{"level":30,"time":1749201829744,"pid":15380,"hostname":"DESKTOP-PA6I5ST","msg":".env file found and successfully parsed!"}
+{"level":30,"time":1749201829745,"pid":15380,"hostname":"DESKTOP-PA6I5ST","msg":"Register AppExceptionFilter"}
+{"level":30,"time":1749201829745,"pid":15380,"hostname":"DESKTOP-PA6I5ST","msg":"PathTranformer created!"}
+{"level":30,"time":1749201829745,"pid":15380,"hostname":"DESKTOP-PA6I5ST","msg":"Register routes for UserController..."}
+{"level":30,"time":1749201829746,"pid":15380,"hostname":"DESKTOP-PA6I5ST","msg":"Route registered: POST /register"}
+{"level":30,"time":1749201829746,"pid":15380,"hostname":"DESKTOP-PA6I5ST","msg":"Route registered: POST /login"}
+{"level":30,"time":1749201829746,"pid":15380,"hostname":"DESKTOP-PA6I5ST","msg":"Route registered: POST /:userId/avatar"}
+{"level":30,"time":1749201829746,"pid":15380,"hostname":"DESKTOP-PA6I5ST","msg":"Route registered: GET /login"}
+{"level":30,"time":1749201829747,"pid":15380,"hostname":"DESKTOP-PA6I5ST","msg":"Register routes for OfferController"}
+{"level":30,"time":1749201829747,"pid":15380,"hostname":"DESKTOP-PA6I5ST","msg":"Route registered: GET /"}
+{"level":30,"time":1749201829747,"pid":15380,"hostname":"DESKTOP-PA6I5ST","msg":"Route registered: GET /favorites"}
+{"level":30,"time":1749201829747,"pid":15380,"hostname":"DESKTOP-PA6I5ST","msg":"Route registered: GET /:offerId"}
