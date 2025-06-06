@@ -149,38 +149,38 @@
     "users": [
       {
         "name": "Charlie",
-        "mail": "charlie@mail.ru",
+        "email": "charlie@mail.ru",
         "avatar": "charlie.jpg",
-        "password": "123",
-        "type": "обычный"
+        "password": "1234567",
+        "userType": "base"
       },
       {
         "name": "Alice",
-        "mail": "alice@mail.ru",
+        "email": "alice@mail.ru",
         "avatar": "alice.jpg",
-        "password": "123",
-        "type": "обычный"
+        "password": "1234567",
+        "userType": "base"
       },
       {
         "name": "Bob",
-        "mail": "bob@mail.ru",
+        "email": "bob@mail.ru",
         "avatar": "bob.jpg",
-        "password": "123",
-        "type": "pro"
+        "password": "1234567",
+        "userType": "pro"
       },
       {
         "name": "Diana",
-        "mail": "diana@mail.ru",
+        "email": "diana@mail.ru",
         "avatar": "diana.jpg",
-        "password": "123",
-        "type": "pro"
+        "password": "1234567",
+        "userType": "pro"
       },
       {
         "name": "Ethan",
-        "mail": "ethan@mail.ru",
+        "email": "ethan@mail.ru",
         "avatar": "ethan.jpg",
-        "password": "123",
-        "type": "pro"
+        "password": "1234567",
+        "userType": "pro"
       }
     ],
     "commentsCounts": [

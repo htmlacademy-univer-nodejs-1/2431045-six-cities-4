@@ -1,5 +1,12 @@
 # Как работать над проектом
 
+'Внимание, для корректной работы проета необоходимо использовать версию node.js 18'
+
+```bash
+nvm install 18.20.6
+nvm use 18.20.6
+```
+
 ## Запуск
 
 ```bash
@@ -8,7 +15,7 @@ npm install
 
 Для дальнейшнего использования также понадобится docker
 ```bash
-docker compose -f docker-compose.yml up
+docker compose -f docker-compose.dev.yml up
 ```
 
 Команда установит все зависимости проекта
@@ -31,13 +38,6 @@ npm run cli
 npm run cli -- --version
 ```
 
-### import
-Для запуска нужен работающий docker-контейнер
-
-```bash
-npm run cli -- --import ./mocks/mock-data.tsv admin test 27017 six-cities secret-key
-```
-
 ### generate
 
 Для запуска нужен работающий mock-server, для этого сначала вводим команду
@@ -50,6 +50,14 @@ npm run cli -- --generate <n> ./mocks/mock-data.tsv http://localhost:4023/api
 ```
 
 Команда генерирует n предложений и сохраняет в файл(mock-data.tsv)
+
+### import
+Для запуска нужен работающий docker-контейнер
+
+```bash
+npm run cli -- --import ./mocks/mock-data.tsv admin test 27017 six-cities secret-key
+```
+
 
 ## Запуск Rest приложения
 
