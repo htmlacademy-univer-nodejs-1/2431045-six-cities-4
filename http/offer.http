@@ -1,0 +1,110 @@
+# Объявления
+## Создать новое объявление
+
+POST http://localhost:3123/offers HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImNoYXJsaWVAbWFpbC5ydSIsIm5hbWUiOiJKYWNrIiwiaWQiOiI2ODQyOWEzMGU5YTk5ZmVhOGY2ZmFiMzUiLCJpYXQiOjE3NDkxOTUzMTksImV4cCI6MTc0OTM2ODExOX0.1PlKWAEYGl2_AIhtoGtxUUL8VA0uwYyFUAXzMKMqfB0
+Content-Type: application/json
+
+{
+  "title": "test:title",
+   "description": "Очень круто!Очень круто!Очень круто!Очень круто!Очень круто!",
+   "previewImage": "test:image",
+   "date": "2022-02-15T00:00:00.000Z",
+   "price": 1500,
+   "city": "Paris",
+   "gallery": ["fdgdfhfhfdhdf","fdgdfhfhfdhdf","fdgdfhfhfdhdf","fdgdfhfhfdhdf","fdgdfhfhfdhdf","fdgdfhfhfdhdf"],
+   "isPremium": true,
+   "isFavorite": true,
+   "rating": 4.5,
+   "apartmentType": "hotel",
+   "roomCount": 4,
+   "guestCount": 5,
+   "amenities": ["Breakfast"]
+}
+###
+
+
+# Получить объявление по идентификатору
+GET http://localhost:3123/offers/68429ac0e9a99fea8f6fab42 HTTP/1.1
+
+###
+
+## Получить список объявлений
+GET http://localhost:3123/offers HTTP/1.1
+
+###
+
+## Удалить объявление по идентификатору
+
+DELETE http://localhost:3123/offers/684196206d7930e622c80e0f HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Inp4Y0BtYWlsLnJ1IiwibmFtZSI6IkphY2siLCJpZCI6IjY4NDE4MWUyZmIwYTQ5NjQ0NjM2ODkyYyIsImlhdCI6MTc0OTEyODQ4NSwiZXhwIjoxNzQ5MzAxMjg1fQ.hjgIB4B9QYZ5eVKc00iBCVIR5TWgRny_PwfJkRbWx7k
+
+
+###
+
+
+## Обновить объявление
+
+PATCH http://localhost:3123/offers/6841b7cfdeb5a80ae81ad51d HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Inp4Y0BtYWlsLnJ1IiwibmFtZSI6IkphY2siLCJpZCI6IjY4NDE4MWUyZmIwYTQ5NjQ0NjM2ODkyYyIsImlhdCI6MTc0OTEyODQ4NSwiZXhwIjoxNzQ5MzAxMjg1fQ.hjgIB4B9QYZ5eVKc00iBCVIR5TWgRny_PwfJkRbWx7k
+Content-Type: application/json
+
+{
+  "title": "Ночной дозор 5",
+  "description": "Проверка обновления Проверка обновления Проверка обновления Проверка обновления",
+  "price": 1100
+}
+
+###
+
+## Список комментариев к объявлению
+GET http://localhost:3123/offers/68429ac0e9a99fea8f6fab42/comments HTTP/1.1
+
+###
+
+
+## Список новых товаров
+GET http://localhost:3123/offers/bundles/new HTTP/1.1
+
+###
+
+## Список премиальных предложений
+GET http://localhost:3123/offers/Paris/premium HTTP/1.1
+
+###
+
+## Список избранных предложений
+GET http://localhost:3123/offers/favorites HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Inp4Y0BtYWlsLnJ1IiwibmFtZSI6IkphY2siLCJpZCI6IjY4NDE4MWUyZmIwYTQ5NjQ0NjM2ODkyYyIsImlhdCI6MTc0OTEyODQ4NSwiZXhwIjoxNzQ5MzAxMjg1fQ.hjgIB4B9QYZ5eVKc00iBCVIR5TWgRny_PwfJkRbWx7k
+
+###
+
+## Добавление предложение в избранное
+POST http://localhost:3123/offers/6841b7cfdeb5a80ae81ad51d/favorite HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Inp4Y0BtYWlsLnJ1IiwibmFtZSI6IkphY2siLCJpZCI6IjY4NDE4MWUyZmIwYTQ5NjQ0NjM2ODkyYyIsImlhdCI6MTc0OTEyODQ4NSwiZXhwIjoxNzQ5MzAxMjg1fQ.hjgIB4B9QYZ5eVKc00iBCVIR5TWgRny_PwfJkRbWx7k
+
+###
+
+## Удаление предложение в избранное
+DELETE http://localhost:3123/offers/6841b7cfdeb5a80ae81ad51d/favorite HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Inp4Y0BtYWlsLnJ1IiwibmFtZSI6IkphY2siLCJpZCI6IjY4NDE4MWUyZmIwYTQ5NjQ0NjM2ODkyYyIsImlhdCI6MTc0OTEyODQ4NSwiZXhwIjoxNzQ5MzAxMjg1fQ.hjgIB4B9QYZ5eVKc00iBCVIR5TWgRny_PwfJkRbWx7k
+
+###
+
+
+
+## Загрузить изображение для объявления
+POST http://localhost:3123/offers/68429ac0e9a99fea8f6fab42/image HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRvcmFuc0BvdmVybG9vay5uZXQiLCJuYW1lIjoiSmFjayIsImlkIjoiNjgyOTkzNzUyYjU5ZjUwYjU4ZWEzY2ZmIiwiaWF0IjoxNzQ5MDI0Nzk4LCJleHAiOjE3NDkxOTc1OTh9.n_VeFc9Iq4IBRNV2hANXo2eWCV9Ztb8MrLy58f_pF54
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="image"; filename="image.png"
+Content-Type: image/png
+
+< /Users/User/Desktop/image.png
+------WebKitFormBoundary7MA4YWxkTrZu0gW--
+
+###
+
+###

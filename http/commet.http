@@ -1,0 +1,19 @@
+# Комментарии
+## Создать комментарий
+
+POST http://localhost:3123/comments HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Inp4Y0BtYWlsLnJ1IiwibmFtZSI6IkphY2siLCJpZCI6IjY4NDE4MWUyZmIwYTQ5NjQ0NjM2ODkyYyIsImlhdCI6MTc0OTEyODQ4NSwiZXhwIjoxNzQ5MzAxMjg1fQ.hjgIB4B9QYZ5eVKc00iBCVIR5TWgRny_PwfJkRbWx7k
+Content-Type: application/json
+
+{
+  "text": "new new comment",
+  "offerId": "684194626d7930e622c80def",
+  "rating": 5
+}
+
+###
+
+## Список комментариев к объявлению
+GET http://localhost:3123/offers/684194626d7930e622c80def/comments HTTP/1.1
+
+###
