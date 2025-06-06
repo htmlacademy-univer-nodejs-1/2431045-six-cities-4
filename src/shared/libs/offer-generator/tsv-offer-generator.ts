@@ -15,7 +15,7 @@ export class TSVOfferGenerator implements OfferGenerator {
     const city = getRandomItem(this.mockData.cities);
     const previewImage = getRandomItem(this.mockData.previewImages);
 
-    const photos = JSON.stringify(getRandomItem(this.mockData.photos))
+    const photos = JSON.stringify(getRandomItem(this.mockData.photos));
 
     const premium = getRandomItem(this.mockData.premium);
     const favorite = getRandomItem(this.mockData.favorite);

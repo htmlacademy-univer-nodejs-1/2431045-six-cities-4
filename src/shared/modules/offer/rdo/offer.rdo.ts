@@ -53,5 +53,5 @@ export class OfferRdo {
   public commentsCount: number;
 
   @Expose()
-  public coordinates:number
+  public coordinates:number;
 }

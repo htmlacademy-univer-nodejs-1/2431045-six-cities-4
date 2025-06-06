@@ -41,7 +41,7 @@ export default class OfferController extends BaseController {
 
     this.addRoute({ path: '/', method: HttpMethod.Get, handler: this.getAllOffers });
 
-        this.addRoute({
+    this.addRoute({
       path: '/favorites',
       method: HttpMethod.Get,
       handler: this.getFavoriteOffers,
@@ -139,7 +139,7 @@ export default class OfferController extends BaseController {
     this.addRoute({
       path: '/:city/premium',
       method: HttpMethod.Get,
-      handler: (req, res, _next) => 
+      handler: (req, res, _next) =>
         this.getPremiumOffersByCity(req as Request<ParamCity>, res),
     });
   }
@@ -149,23 +149,21 @@ export default class OfferController extends BaseController {
     tokenPayload,
   }: Request<ParamsDictionary, unknown, unknown, QueryCount>,
   res: Response
-): Promise<void> {
-  const count = query.count ? parseInt(query.count, 10) : 60;
+  ): Promise<void> {
+    const count = query.count ? parseInt(query.count, 10) : 60;
 
-  const userId = tokenPayload ? tokenPayload.id : undefined;
+    const userId = tokenPayload ? tokenPayload.id : undefined;
 
-  const offers = await this.offerService.find(count, userId);
+    const offers = await this.offerService.find(count, userId);
 
-  this.ok(res, fillDTO(OfferSummaryRdo, offers));
-}
-
-
+    this.ok(res, fillDTO(OfferSummaryRdo, offers));
+  }
 
 
   public async uploadImage({ params, file, tokenPayload } : Request<ParamOfferId>, res: Response) {
     const { offerId } = params;
     const updateDto = { previewImage: file?.filename };
-    await this.offerService.updateById(offerId, updateDto, tokenPayload.id );
+    await this.offerService.updateById(offerId, updateDto, tokenPayload.id);
     this.created(res, fillDTO(UploadImageRdo, updateDto));
   }
 
@@ -188,7 +186,6 @@ export default class OfferController extends BaseController {
   }
 
 
-
   public async getOfferById(
     { params, tokenPayload }: Request,
     res: Response
@@ -200,7 +197,7 @@ export default class OfferController extends BaseController {
     this.ok(res, fillDTO(OfferRdo, offer));
   }
 
-  public async update({ body, params, tokenPayload  }: Request<ParamOfferId, unknown, UpdateOfferDto>, res: Response): Promise<void> {
+  public async update({ body, params, tokenPayload }: Request<ParamOfferId, unknown, UpdateOfferDto>, res: Response): Promise<void> {
     const updatedOffer = await this.offerService.updateById(params.offerId, body, tokenPayload.id);
 
     this.ok(res, fillDTO(OfferRdo, updatedOffer));

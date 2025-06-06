@@ -37,7 +37,7 @@ export class DefaultUserService implements UserService {
     if (existedUser) {
       return existedUser;
     }
-    
+
     const user = new UserEntity({ ...dto, avatar: DEFAULT_AVATAR_FILE_NAME });
     user.setPassword(dto.password, salt);
     const result = await this.userModel.create(user);

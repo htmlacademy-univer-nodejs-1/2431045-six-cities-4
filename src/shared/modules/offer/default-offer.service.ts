@@ -152,7 +152,7 @@ export class DefaultOfferService implements OfferService {
       .limit(DEFAULT_PREMIUM_BY_TOWN_MAX_LIMIT)
       .sort({ date: -1 })
       .lean<OfferSummaryEntity[]>()
-      .exec();  
+      .exec();
 
     const normalizedOffers = offers.map((offer) => ({
       ...offer,
@@ -164,7 +164,6 @@ export class DefaultOfferService implements OfferService {
     }
     return normalizedOffers;
   }
-
 
 
   public async getUserFavorites(

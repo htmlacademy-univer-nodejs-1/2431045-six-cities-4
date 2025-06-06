@@ -1,5 +1,5 @@
 import { Coordinates } from './coordinates.type.js';
-import { CityType } from './city-type.enum.js'
+import { CityType } from './city-type.enum.js';
 
 export const COORDINATES_BY_CITY : Record<CityType, Coordinates> = {
   [CityType.Paris]: {
